@@ -52,10 +52,6 @@ if command_output.returncode == 0:
     if os.path.exists(cachefile):
         os.remove(cachefile)
 
-    # just print the script output
-    print(stdout.decode("utf-8"))
-    # exit with command return code
-    sys.exit(command_output.returncode)
 
 # if command exit is not 0 push payload to signalfx print error and exit with command exitcode
 if command_output.returncode != 0:
@@ -81,9 +77,6 @@ if command_output.returncode != 0:
         f = open(cachefile, "w")
         f.write(str(time.time()))
         f.close()
-        print(stdout.decode("utf-8"))
-        print(stderr.decode("utf-8"))
-        sys.exit(command_output.returncode)
     # if the cache file does not exist, we need to send the event to signalfx
     else:
         # event sent to sfx : https://dev.splunk.com/observability/reference/api/ingest_data/latest#endpoint-send-custom-events
@@ -91,7 +84,9 @@ if command_output.returncode != 0:
         f = open(cachefile, "w")
         f.write(str(time.time()))
         f.close()
-        print(stdout.decode("utf-8"))
-        print(stderr.decode("utf-8"))
-        sys.exit(command_output.returncode)
 
+# just print the script output
+print(stderr.decode("utf-8"))
+print(stdout.decode("utf-8"))
+# exit with command return code
+sys.exit(command_output.returncode)
